@@ -15,7 +15,63 @@ public class FreezeTrackerTester {
    * @return true if all cases pass, false otherwise.
    */
   public static boolean testAdd() {
-    return false; // default return statement
+    // Scenario 1: Add to an empty list
+    {
+    // Create a new FreezeTracker
+    FreezeTracker tracker = new FreezeTracker();
+    // Create some LakeRecord objects
+    LakeRecord record1 = new LakeRecord("2019-20", "December 31", "February 11", 45);
+    LakeRecord record2 = new LakeRecord("2020-21", "February 10", "April 12", 50);
+    LakeRecord record3 = new LakeRecord("2017-18", "March 17", "April 10", 20);
+    // Add records to the tracker
+    tracker.add(record1);
+    tracker.add(record2);
+    tracker.add(record3);
+    // Check size
+    if (tracker.size() != 3) {
+      return false;
+    }
+    // check first winter
+    if (!tracker.get(0).getWinter().equals("2019-20")) {
+      return false;
+    }
+    // check last winter
+    if (!tracker.get(tracker.size() - 1).getWinter().equals("2017-18")) {
+      return false;
+    }
+  }
+  // Scenario 2: Add to a non-empty list
+  {
+    // Create a new FreezeTracker
+    FreezeTracker tracker = new FreezeTracker();
+    // Create some LakeRecord objects
+    LakeRecord record1 = new LakeRecord("2019-20", "December 31", "February 11", 45);
+    LakeRecord record2 = new LakeRecord("2020-21", "February 10", "April 12", 50);
+    LakeRecord record3 = new LakeRecord("2017-18", "March 17", "April 10", 20);
+    // Add records to the tracker
+    tracker.add(record1);
+    tracker.add(record2);
+    tracker.add(record3);
+    // Check size
+    if (tracker.size() != 3) {
+      return false;
+    }
+    LakeRecord record4 = new LakeRecord("2016-17", "March 15", "April 5", 20);
+    tracker.add(record4);
+    // Check size
+    if (tracker.size() != 4) {
+      return false;
+    }
+    // check first winter
+    if (!tracker.get(0).getWinter().equals("2019-20")) {
+      return false;
+    }
+    // check last winter
+    if (!tracker.get(tracker.size() - 1).getWinter().equals("2016-17")) {
+      return false;
+    }
+  }
+    return true;
   }
 
   /**

@@ -131,11 +131,11 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
   @Override
   public void add(LakeRecord record) {
     // Create a new LinkedNode with the given record
-    LinkedNode newNode = new LinkedNode(record, tail, null);
+    LinkedNode newNode = new LinkedNode(record, null, null);
     // If the list is empty, set head to the new node
     if (head == null) {
       head = newNode;
-    } else {
+      size++;
       return;
     }
     // If the list is not empty, set the next pointer of the current tail to the new node
@@ -242,7 +242,7 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
     LinkedNode current = head;
     int count = 0;
     // Traverse the list to find the record at index i
-    while (current != null && count < i) {
+    while (current != null && count <= i) {
       // If the current index matches i, return the record
       if (count == i) {
         return current.getLakeRecord();
