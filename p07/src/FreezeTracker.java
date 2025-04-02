@@ -211,7 +211,7 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
     if (current == null) {
       return false; // Record not found
     }
-    // If the record is found, remove the node
+    // If the record is found, remove the node and decrement size
     removeNode(current);
     return true;
   }
@@ -282,8 +282,6 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
       // Check if the record has complete data
       if (!record.hasCompleteData()) {
         this.remove(record);
-        // Decrement size
-        size--;
         // Reset the iterator to the beginning
         iter = this.iterator();
         // Reset the current record
@@ -319,12 +317,17 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
     // and the merged record
     LakeRecord currentRecord = null;
     LakeRecord nextRecord = null;
-    LakeRecord mergedRecord = null;
+    //LakeRecord mergedRecord = null;
     // for each record
     while (iter.hasNext()) {
       currentRecord = iter.next();
+      //System.out.println( "Current Record: " + currentRecord);
       if (iter.hasNext()) {
         nextRecord = iter.next();
+        //System.out.println( "Next Record: " + nextRecord);
+      } else {
+        nextRecord = this.get(size() - 1);
+        //System.out.println( "Next Record: " + nextRecord);
       }
       // end condition of nulls are detected
       if (currentRecord == null || nextRecord == null) {
@@ -334,19 +337,17 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
       if (currentRecord.getWinter().equals(nextRecord.getWinter())) {
         // merge the two
         currentRecord.mergeWith(nextRecord);
-        mergedRecord = currentRecord;
+        //mergedRecord = currentRecord;
         // discard both records
-        this.remove(currentRecord);
+        //this.remove(currentRecord);
         this.remove(nextRecord);
-        this.add(mergedRecord);
-        // decrement size
-        size--;
+        //this.add(mergedRecord);
         // reset the iterator to the beginning
         iter = this.iterator();
         // reset the current and next records
         currentRecord = null;
         nextRecord = null;
-        mergedRecord = null;
+        //mergedRecord = null;
       } else {
       continue;
       }

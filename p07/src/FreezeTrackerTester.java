@@ -276,7 +276,7 @@ public class FreezeTrackerTester {
         return false;
       }
       // Check that the merged record has correct freeze date
-      if (!tracker.get(0).getFreezeDate().equals("March 15")) {
+      if (!tracker.get(0).getFreezeDate().equals("December 1")) {
         System.out.println(tracker.get(0).getFreezeDate());
         return false;
       }
