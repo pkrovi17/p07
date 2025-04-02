@@ -148,6 +148,8 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
     temp.setNext(newNode);
     //sets new nodes previous to temp
     newNode.setPrev(temp);
+    // tail is now new node
+    tail = newNode;
     //increments size
     size++;
   }

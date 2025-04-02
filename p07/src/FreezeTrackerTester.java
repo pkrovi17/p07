@@ -185,7 +185,35 @@ public class FreezeTrackerTester {
    * @return true if all cases pass, false otherwise.
    */
   public static boolean testIterators() {
-    return false; // default return statement
+    {
+      // Create a new FreezeTracker
+      FreezeTracker tracker = new FreezeTracker();
+      // Create some LakeRecord objects
+      LakeRecord record1 = new LakeRecord("2019-20", "December 31", "February 11", 45);
+      LakeRecord record2 = new LakeRecord("2020-21", "February 10", "April 12", 50);
+      LakeRecord record3 = new LakeRecord("2017-18", "March 17", "April 10", 20);
+      // Add records to the tracker
+      tracker.add(record1);
+      tracker.add(record2);
+      tracker.add(record3);
+      // Iterate forward using the iterator
+      Iterator<LakeRecord> fwdIterator = tracker.iterator();
+      boolean f = false;
+      for (LakeRecord record : tracker) {
+        if (!fwdIterator.hasNext()) {
+          f = true;
+        }
+        LakeRecord fwdRecord = fwdIterator.next();
+        // Check if the forward iterator is correct
+        if (!fwdRecord.equals(record)) {
+          return false;
+        }
+        if (f) {
+          break;
+        }
+      }
+    }
+    return true; 
   }
 
   /**
