@@ -257,8 +257,36 @@ public class FreezeTrackerTester {
     LakeRecord freeze1 = new LakeRecord("2019-20", "December 1", "January 15", 45);
     LakeRecord freeze2 = new LakeRecord("2019-20", "January 20", "March 10", 50);
     LakeRecord freeze3 = new LakeRecord("2019-20", "March 15", "April 5", 20);
-
-    return false; // default return statement
+    {
+      // Create a new FreezeTracker
+      FreezeTracker tracker = new FreezeTracker();
+      // Add records to the tracker
+      tracker.add(freeze1);
+      tracker.add(freeze2);
+      tracker.add(freeze3);
+      tracker.mergeWinters();
+      // Check size
+      if (tracker.size() != 1) {
+        System.out.println(tracker.size());
+        return false;
+      }
+      // Check that the merged record is in correct winter
+      if (!tracker.get(0).getWinter().equals("2019-20")) {
+        System.out.println(tracker.get(0).getWinter());
+        return false;
+      }
+      // Check that the merged record has correct freeze date
+      if (!tracker.get(0).getFreezeDate().equals("March 15")) {
+        System.out.println(tracker.get(0).getFreezeDate());
+        return false;
+      }
+      // Check that the merged record has correct thaw date
+      if (!tracker.get(0).getThawDate().equals("April 5")) {
+        System.out.println(tracker.get(0).getThawDate());
+        return false;
+      }
+    }
+    return true; 
   }
 
   /**

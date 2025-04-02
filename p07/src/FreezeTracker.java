@@ -70,6 +70,7 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    */
   @Override
   public int size() {
+    // Return the size of the list
     return size;
   }
 
@@ -277,8 +278,16 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
   public void removeIncompleteRecords() {
     Iterator <LakeRecord> iter = this.iterator();
     while (iter.hasNext()) {
-      if (!iter.next().hasCompleteData()) {
-        iter.remove();
+      LakeRecord record = iter.next();
+      // Check if the record has complete data
+      if (!record.hasCompleteData()) {
+        this.remove(record);
+        // Decrement size
+        size--;
+        // Reset the iterator to the beginning
+        iter = this.iterator();
+        // Reset the current record
+        record = null;
       }
     }
   }
@@ -304,32 +313,45 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    * each algorithmic step you use!
    */
   public void mergeWinters() {
+    //iterator for the list
     Iterator<LakeRecord> iter = this.iterator();
+    // initialize the current and next records
+    // and the merged record
     LakeRecord currentRecord = null;
     LakeRecord nextRecord = null;
+    LakeRecord mergedRecord = null;
+    // for each record
     while (iter.hasNext()) {
       currentRecord = iter.next();
-      nextRecord = iter.hasNext() ? iter.next() : null;
-      if (nextRecord != null && currentRecord.getWinter().equals(nextRecord.getWinter())) {
+      if (iter.hasNext()) {
+        nextRecord = iter.next();
+      }
+      // end condition of nulls are detected
+      if (currentRecord == null || nextRecord == null) {
+        break;
+      }
+      //check if the two records are from the same winter
+      if (currentRecord.getWinter().equals(nextRecord.getWinter())) {
+        // merge the two
         currentRecord.mergeWith(nextRecord);
-        iter.remove();
+        mergedRecord = currentRecord;
+        // discard both records
+        this.remove(currentRecord);
+        this.remove(nextRecord);
+        this.add(mergedRecord);
+        // decrement size
+        size--;
+        // reset the iterator to the beginning
+        iter = this.iterator();
+        // reset the current and next records
+        currentRecord = null;
+        nextRecord = null;
+        mergedRecord = null;
+      } else {
+      continue;
       }
     }
-    // Reset the iterator to the beginning of the list
-    iter = this.iterator();
-    // Update the tail pointer to the last node
-    while (iter.hasNext()) {
-      nextRecord = iter.next();
-    }
-    tail = find(nextRecord);
-    // Update the size of the list
-    size = 0;
-    while (iter.hasNext()) {
-      iter.next();
-      size++;
-    }
   }
-
   /**
    * Returns a new linked list containing all the records falling between year1 and
    * year 2, inclusive. The returned list should not contain any references to nodes
