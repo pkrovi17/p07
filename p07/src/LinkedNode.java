@@ -26,7 +26,9 @@ public class LinkedNode {
    * @param next a reference to the next node in this list (may be null)
    */
   public LinkedNode(LakeRecord data, LinkedNode prev, LinkedNode next) {
-    // TODO
+    this.data = data;
+    this.prev = prev;
+    this.next = next;
   }
 
   /**
@@ -35,7 +37,9 @@ public class LinkedNode {
    * @param data the data to be contained in this node
    */
   public LinkedNode(LakeRecord data) {
-    // TODO
+    this.data = data;
+    this.prev = null;
+    this.next = null;
   }
 
   /**
@@ -44,7 +48,7 @@ public class LinkedNode {
    * @return the LakeRecord stored in this node
    */
   public LakeRecord getLakeRecord() {
-    return null; // TODO
+    return data;
   }
 
   /**
@@ -53,7 +57,7 @@ public class LinkedNode {
    * @return a reference to the previous node in this list (may be null)
    */
   public LinkedNode getPrev() {
-    return null; // TODO
+    return prev;
   }
 
   /**
@@ -62,7 +66,7 @@ public class LinkedNode {
    * @param newPrev the new previous node in this list (may be null)
    */
   public void setPrev(LinkedNode newPrev) {
-    // TODO
+    prev = newPrev;
   }
 
   /**
@@ -71,7 +75,7 @@ public class LinkedNode {
    * @return a reference to the next node in this list (may be null)
    */
   public LinkedNode getNext() {
-    return null; // TODO
+    return next;
   }
 
   /**
@@ -80,6 +84,6 @@ public class LinkedNode {
    * @param newNext the new next node in this list (may be null)
    */
   public void setNext(LinkedNode newNext) {
-    // TODO
+    next = newNext;
   }
 }

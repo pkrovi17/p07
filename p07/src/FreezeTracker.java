@@ -28,7 +28,10 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    * Constructs an empty FreezeTracker.
    */
   public FreezeTracker() {
-    // TODO
+    head = null;
+    tail = null;
+    size = 0;
+    reversed = false;
   }
 
   /**
@@ -41,6 +44,23 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    */
   public FreezeTracker(ArrayList<LakeRecord> records) {
     // TODO
+    // Initialize the linked list
+    head = null;
+    tail = null;
+    size = 0 ;
+    reversed = false;
+    // Cleaning
+    // Iterate through the records and add them to the linked list
+    for (LakeRecord record : records) {
+      // Check if the record is valid (not null)
+      if (record != null) {
+        // Add the record to the linked list
+        add(record);
+      }
+    }
+    this.removeIncompleteRecords();
+    this.updateDurations();
+    this.mergeWinters();
   }
 
   /**
@@ -50,7 +70,7 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    */
   @Override
   public int size() {
-    return 0; // TODO
+    return size;
   }
 
   /**
@@ -60,7 +80,7 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    */
   @Override
   public boolean isEmpty() {
-    return false; // TODO
+    return size == 0;
   }
 
   /**
@@ -68,7 +88,9 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    */
   @Override
   public void clear() {
-    // TODO
+    head = null;
+    tail = null;
+    size = 0;
   }
 
   /**
@@ -76,7 +98,7 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    * @param reversed whether to traverse the list backwards
    */
   public void setReversed(boolean reversed) {
-    // TODO
+    this.reversed = reversed;
   }
 
   /**
@@ -84,7 +106,7 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    * @return head of the linked list
    */
   public LinkedNode getHead() {
-    return null; // TODO
+    return head;
   }
 
   /**
@@ -92,7 +114,7 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    * @return tail of the linked list
    */
   public LinkedNode getTail() {
-    return null; // TODO
+    return tail;
   }
 
 
@@ -108,7 +130,26 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    */
   @Override
   public void add(LakeRecord record) {
-    // TODO
+    // Create a new LinkedNode with the given record
+    LinkedNode newNode = new LinkedNode(record, tail, null);
+    // If the list is empty, set head to the new node
+    if (head == null) {
+      head = newNode;
+    } else {
+      return;
+    }
+    // If the list is not empty, set the next pointer of the current tail to the new node
+    LinkedNode temp = head;
+    //finds tail
+    while (temp.getNext() != null) {
+      temp = temp.getNext();
+    }
+    //sets tails new next to new node
+    temp.setNext(newNode);
+    //sets new nodes previous to temp
+    newNode.setPrev(temp);
+    //increments size
+    size++;
   }
 
   /**
@@ -124,7 +165,28 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    * @throws IllegalArgumentException if node is null
    */
   private void removeNode(LinkedNode node) {
-    // TODO
+    LinkedNode current = node;
+    // Check if the node is null
+    if (current == null) {
+      throw new IllegalArgumentException("Node cannot be null");
+    }
+    // If node is head, update head
+    if (current == head) {
+      head = current.getNext();
+    }
+    //update tail if node is tail
+    if (current == tail) {
+      tail = current.getPrev();
+    }
+    // If node is in the middle, update pointers
+    if (current.getNext() != null) {
+      current.getNext().setPrev(current.getPrev());
+    }
+    if (current.getPrev() != null) {
+      current.getPrev().setNext(current.getNext());
+    }
+    // Decrement size
+    size--;
   }
 
   /**
@@ -139,7 +201,15 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    */
   @Override
   public boolean remove(LakeRecord record) {
-    return false; // TODO
+    // Finds the node containing the record and sets it to current
+    LinkedNode current = find(record);
+    // if null = record not found
+    if (current == null) {
+      return false; // Record not found
+    }
+    // If the record is found, remove the node
+    removeNode(current);
+    return true;
   }
 
   /**
@@ -148,7 +218,15 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    * @return The first LinkedNode containing the given record, or null if none exists
    */
   public LinkedNode find(LakeRecord record) {
-    return null; // TODO
+    LinkedNode current = head;
+    // Traverse the list to find the record
+    while(current != null && !current.getLakeRecord().equals(record)) {
+      current = current.getNext();
+    }
+    if (current == null) {
+      return null; // Record not found
+    }
+    return current;
   }
 
   /**
@@ -158,7 +236,22 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    * @throws IndexOutOfBoundsException if i is negative or greater than size()-1
    */
   public LakeRecord get(int i) {
-    return null; // TODO
+    if (i < 0 || i > size() - 1)  {
+      throw new IndexOutOfBoundsException("Index out of bounds");
+    }
+    LinkedNode current = head;
+    int count = 0;
+    // Traverse the list to find the record at index i
+    while (current != null && count < i) {
+      // If the current index matches i, return the record
+      if (count == i) {
+        return current.getLakeRecord();
+      }
+      // Move to the next node
+      current = current.getNext();
+      count++;
+    }
+    return null; 
   }
 
   /**
@@ -169,23 +262,32 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    */
   @Override
   public Iterator<LakeRecord> iterator() {
-    return null; // TODO
+    if (reversed) {
+      return new IteratorBwd(tail);
+    } else {
+      return new IteratorFwd(head);
+    }
   }
-
-
   /**
    * Removes all nodes with missing freeze or thaw dates
    */
   public void removeIncompleteRecords() {
-    // TODO
+    Iterator <LakeRecord> iter = this.iterator();
+    while (iter.hasNext()) {
+      if (!iter.next().hasCompleteData()) {
+        iter.remove();
+      }
+    }
   }
-
   /**
    * Fixes all LakeRecords contained in this list with incorrect durations
    * (Hint: LakeRecord already has a method for this!)
    */
   public void updateDurations() {
-    // TODO
+    Iterator <LakeRecord> iter = this.iterator();
+    while (iter.hasNext()) {
+      iter.next().updateDuration();
+    }
   }
 
   /**
@@ -199,7 +301,30 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    * each algorithmic step you use!
    */
   public void mergeWinters() {
-    // TODO
+    Iterator<LakeRecord> iter = this.iterator();
+    LakeRecord currentRecord = null;
+    LakeRecord nextRecord = null;
+    while (iter.hasNext()) {
+      currentRecord = iter.next();
+      nextRecord = iter.hasNext() ? iter.next() : null;
+      if (nextRecord != null && currentRecord.getWinter().equals(nextRecord.getWinter())) {
+        currentRecord.mergeWith(nextRecord);
+        iter.remove();
+      }
+    }
+    // Reset the iterator to the beginning of the list
+    iter = this.iterator();
+    // Update the tail pointer to the last node
+    while (iter.hasNext()) {
+      nextRecord = iter.next();
+    }
+    tail = find(nextRecord);
+    // Update the size of the list
+    size = 0;
+    while (iter.hasNext()) {
+      iter.next();
+      size++;
+    }
   }
 
   /**
