@@ -135,6 +135,7 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
     // If the list is empty, set head to the new node
     if (head == null) {
       head = newNode;
+      tail = newNode;
       size++;
       return;
     }
