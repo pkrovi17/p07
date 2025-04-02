@@ -213,6 +213,35 @@ public class FreezeTrackerTester {
         }
       }
     }
+    {
+      // Create a new FreezeTracker
+      FreezeTracker tracker = new FreezeTracker();
+      // Create some LakeRecord objects
+      LakeRecord record1 = new LakeRecord("2019-20", "December 31", "February 11", 45);
+      LakeRecord record2 = new LakeRecord("2020-21", "February 10", "April 12", 50);
+      LakeRecord record3 = new LakeRecord("2017-18", "March 17", "April 10", 20);
+      // Add records to the tracker
+      tracker.add(record1);
+      tracker.add(record2);
+      tracker.add(record3);
+      // Iterate backward using the iterator
+      tracker.setReversed(true);
+      Iterator<LakeRecord> bwdIterator = tracker.iterator();
+      boolean b = false;
+      for (LakeRecord record : tracker) {
+        if (!bwdIterator.hasNext()) {
+          b = true;
+        }
+        LakeRecord bwdRecord = bwdIterator.next();
+        // Check if the backward iterator is correct
+        if (!bwdRecord.equals(record)) {
+          return false;
+        }
+        if (b) {
+          break;
+        }
+      }
+    }
     return true; 
   }
 
