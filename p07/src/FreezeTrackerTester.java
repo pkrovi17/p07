@@ -84,7 +84,43 @@ public class FreezeTrackerTester {
    * @return true if all cases pass, false otherwise.
    */
   public static boolean testRemove() {
-    return false; // default return statement
+    {
+      // Create a new FreezeTracker
+      FreezeTracker tracker = new FreezeTracker();
+      // Create some LakeRecord objects
+      LakeRecord record1 = new LakeRecord("2019-20", "December 31", "February 11", 45);
+      LakeRecord record2 = new LakeRecord("2020-21", "February 10", "April 12", 50);
+      LakeRecord record3 = new LakeRecord("2017-18", "March 17", "April 10", 20);
+      LakeRecord record4 = new LakeRecord("2016-17", "March 15", "April 5", 20);
+      LakeRecord record5 = new LakeRecord("2018-19", "March 17", "April 10", 20);
+      // Add records to the tracker
+      tracker.add(record1);
+      tracker.add(record2);
+      tracker.add(record3);
+      tracker.add(record4);
+      tracker.add(record5);
+      // Check size
+      if (tracker.size() != 5) {
+        return false;
+      }
+      // Remove the first record
+      if (!tracker.remove(record1)) {
+        return false;
+      }
+      // Remove the middle record
+      if (!tracker.remove(record3)) {
+        return false;
+      }
+      // Remove the last record
+      if (!tracker.remove(record5)) {
+        return false;
+      }
+      // Check size
+      if (tracker.size() != 2) {
+        return false;
+      }
+    }
+    return true; 
   }
 
   /**
@@ -95,7 +131,23 @@ public class FreezeTrackerTester {
    * @return true if all cases pass, false otherwise.
    */
   public static boolean testRemoveOnly() {
-    return false; // default return statement
+    {
+      // Create a new FreezeTracker
+      FreezeTracker tracker = new FreezeTracker();
+      // Create some LakeRecord objects
+      LakeRecord record1 = new LakeRecord("2019-20", "December 31", "February 11", 45);
+      // Add records to the tracker
+      tracker.add(record1);
+      // Remove the only record
+      if (!tracker.remove(record1)) {
+        return false;
+      }
+      // Check size
+      if (tracker.size() != 0) {
+        return false;
+      }
+    }
+    return true;
   }
 
   /**
@@ -106,7 +158,24 @@ public class FreezeTrackerTester {
    * @return true if all cases pass, false otherwise.
    */
   public static boolean testRemoveDoesNotExist() {
-    return false; // default return statement
+    {
+      // Create a new FreezeTracker
+      FreezeTracker tracker = new FreezeTracker();
+      // Create some LakeRecord objects
+      LakeRecord record1 = new LakeRecord("2019-20", "December 31", "February 11", 45);
+      LakeRecord record2 = new LakeRecord("2020-21", "February 10", "April 12", 50);
+      // Add records to the tracker
+      tracker.add(record1);
+      // Remove a record that doesn't exist
+      if (tracker.remove(record2)) {
+        return false;
+      }
+      // Check size
+      if (tracker.size() != 1) {
+        return false;
+      }
+    }
+    return true;
   }
 
   /**
