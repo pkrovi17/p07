@@ -398,6 +398,9 @@ public class FreezeTrackerTester {
       System.out.println(tracker.getAverageFreezeDuration());
       return false;
     }
+    if (tracker.getAverageFreezeDuration() % 1 == 0) {
+      return false;
+    }
     return true;
   }
 
