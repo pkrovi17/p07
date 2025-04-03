@@ -47,7 +47,6 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
     tail = null;
     size = 0 ;
     reversed = false;
-    // Cleaning
     // Iterate through the records and add them to the linked list
     for (LakeRecord record : records) {
       // Check if the record is valid (not null)
