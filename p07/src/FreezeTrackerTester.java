@@ -1,4 +1,34 @@
-
+//////////////// FILE HEADER (INCLUDE IN EVERY FILE) //////////////////////////
+//
+// Title:    Freeze Tracking System and Analyzer Testing Methods
+// Course:   CS 300 Spring 2025
+//
+// Author:   Pranav Krovi
+// Email:    pkrovi@wisc.edu
+// Lecturer: Mouna Kacem
+//
+//////////////////// PAIR PROGRAMMERS COMPLETE THIS SECTION ///////////////////
+// 
+// Partner Name:    none
+// Partner Email:   none
+// Partner Lecturer's Name: none
+// 
+// VERIFY THE FOLLOWING BY PLACING AN X NEXT TO EACH TRUE STATEMENT:
+//   x Write-up states that pair programming is allowed for this assignment.
+//   x We have both read and understand the course Pair Programming Policy.
+//   x We have registered our team prior to the team registration deadline.
+//
+//////////////////////// ASSISTANCE/HELP CITATIONS ////////////////////////////
+//
+// Persons:         Mouna Kacem 
+//                  - lecture slides showcasing the use of linked lists
+//                  - in class exercises using linked lists
+// Online Sources:  W3 Schools and tutorials point
+//                  - https://www.w3schools.com/dsa/dsa_data_linkedlists_types.php
+//                  - https://www.tutorialspoint.com/data_structures_algorithms/linked_list_algorithms.htm
+//
+///////////////////////////////////////////////////////////////////////////////
+//imports
 import java.util.Iterator;
 
 /**
@@ -332,6 +362,7 @@ public class FreezeTrackerTester {
       if (tracker.size() != 3) {
         return false;
       }
+      // Check that none of the records have missing data
       if (tracker.get(0).getDaysOfIceCover() == LakeRecord.MISSING) {
         return false;
       }
@@ -342,7 +373,7 @@ public class FreezeTrackerTester {
         return false;
       }
     }
-    return true; // default return statement
+    return true;
   }
 
   /**
@@ -485,6 +516,7 @@ public class FreezeTrackerTester {
     if (filtered.size() != 2) {
       return false;
     }
+    // Check that the filtered records are correct
     if (!filtered.get(0).getWinter().equals("2019-20")) {
       return false;
     }
@@ -517,6 +549,7 @@ public class FreezeTrackerTester {
     if (filtered.size() != 2) {
       return false;
     }
+    // Check that the filtered records are correct
     if (!filtered.get(0).getWinter().equals("2019-20")) {
       return false;
     }
