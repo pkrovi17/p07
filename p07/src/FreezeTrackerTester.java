@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+
 import java.util.Iterator;
 
 /**
@@ -351,7 +351,23 @@ public class FreezeTrackerTester {
    * @return true if all cases pass, false otherwise.
    */
   public static boolean testAverageFreezeDuration() {
-    return false; // default return statement
+    // Create a new FreezeTracker
+    FreezeTracker tracker = new FreezeTracker();
+    // Create some LakeRecord objects
+    LakeRecord record1 = new LakeRecord("2019-20", "December 31", "February 11", 45);
+    LakeRecord record2 = new LakeRecord("2020-21", "February 10", "April 12", 50);
+    LakeRecord record3 = new LakeRecord("2017-18", "March 17", "April 10", 20);
+    // Add records to the tracker
+    tracker.add(record1);
+    tracker.add(record2);
+    tracker.add(record3);
+    float expected = (float)record1.getDaysOfIceCover() + record2.getDaysOfIceCover() + record3.getDaysOfIceCover() / (float)3.0;
+    // Check average
+    if (!(tracker.getAverageFreezeDuration() > expected + 0.000001 || tracker.getAverageFreezeDuration() < expected - 0.000001)) {
+      System.out.println(tracker.getAverageFreezeDuration());
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -360,7 +376,21 @@ public class FreezeTrackerTester {
    * @return true if all cases pass, false otherwise.
    */
   public static boolean testMaxFreezeDuration() {
-    return false; // default return statement
+    // Create a new FreezeTracker
+    FreezeTracker tracker = new FreezeTracker();
+    // Create some LakeRecord objects
+    LakeRecord record1 = new LakeRecord("2019-20", "December 31", "February 11", 45);
+    LakeRecord record2 = new LakeRecord("2020-21", "February 10", "April 12", 40);
+    LakeRecord record3 = new LakeRecord("2017-18", "March 17", "April 10", 50);
+    // Add records to the tracker
+    tracker.add(record1);
+    tracker.add(record2);
+    tracker.add(record3);
+    // Check max
+    if (tracker.getMaxFreezeDuration() != 50) {
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -369,7 +399,21 @@ public class FreezeTrackerTester {
    * @return true if all cases pass, false otherwise.
    */
   public static boolean testMinFreezeDuration() {
-    return false; // default return statement
+    // Create a new FreezeTracker
+    FreezeTracker tracker = new FreezeTracker();
+    // Create some LakeRecord objects
+    LakeRecord record1 = new LakeRecord("2019-20", "December 31", "February 11", 45);
+    LakeRecord record2 = new LakeRecord("2020-21", "February 10", "April 12", 40);
+    LakeRecord record3 = new LakeRecord("2017-18", "March 17", "April 10", 50);
+    // Add records to the tracker
+    tracker.add(record1);
+    tracker.add(record2);
+    tracker.add(record3);
+    // Check min
+    if (tracker.getMinFreezeDuration() != 40) {
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -378,7 +422,21 @@ public class FreezeTrackerTester {
    * @return true if all cases pass, false otherwise.
    */
   public static boolean testGetEarliestFreeze() {
-    return false; // default return statement
+    // Create a new FreezeTracker
+    FreezeTracker tracker = new FreezeTracker();
+    // Create some LakeRecord objects
+    LakeRecord record1 = new LakeRecord("2019-20", "December 31", "February 11", 45);
+    LakeRecord record2 = new LakeRecord("2020-21", "February 10", "April 12", 40);
+    LakeRecord record3 = new LakeRecord("2017-18", "March 17", "April 10", 50);
+    // Add records to the tracker
+    tracker.add(record1);
+    tracker.add(record2);
+    tracker.add(record3);
+    // Check earliest freeze
+    if (!tracker.getEarliestFreeze().equals("December 31")) {
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -387,7 +445,21 @@ public class FreezeTrackerTester {
    * @return true if all cases pass, false otherwise.
    */
   public static boolean testGetLatestThaw() {
-    return false; // default return statement
+    // Create a new FreezeTracker
+    FreezeTracker tracker = new FreezeTracker();
+    // Create some LakeRecord objects
+    LakeRecord record1 = new LakeRecord("2019-20", "December 31", "February 11", 45);
+    LakeRecord record2 = new LakeRecord("2020-21", "February 10", "April 12", 40);
+    LakeRecord record3 = new LakeRecord("2017-18", "March 17", "April 10", 50);
+    // Add records to the tracker 
+    tracker.add(record1);
+    tracker.add(record2);
+    tracker.add(record3);
+    // Check latest thaw
+    if (!tracker.getLatestThaw().equals("April 12")) {
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -398,7 +470,28 @@ public class FreezeTrackerTester {
    * @return true if all cases pass, false otherwise.
    */
   public static boolean testFilterByYear() {
-    return false; // default return statement
+    // Create a new FreezeTracker
+    FreezeTracker tracker = new FreezeTracker();
+    // Create some LakeRecord objects
+    LakeRecord record1 = new LakeRecord("2019-20", "December 31", "February 11", 45);
+    LakeRecord record2 = new LakeRecord("2020-21", "February 10", "April 12", 40);
+    LakeRecord record3 = new LakeRecord("2017-18", "March 17", "April 10", 50);
+    // Add records to the tracker
+    tracker.add(record1);
+    tracker.add(record2);
+    tracker.add(record3);
+    // Check filtered records
+    FreezeTracker filtered = tracker.filterByYear(2019, 2020);
+    if (filtered.size() != 2) {
+      return false;
+    }
+    if (!filtered.get(0).getWinter().equals("2019-20")) {
+      return false;
+    }
+    if (!filtered.get(1).getWinter().equals("2020-21")) {
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -409,7 +502,28 @@ public class FreezeTrackerTester {
    * @return true if all cases pass, false otherwise.
    */
   public static boolean testFilterByDuration() {
-    return false; // default return statement
+    // Create a new FreezeTracker
+    FreezeTracker tracker = new FreezeTracker();
+    // Create some LakeRecord objects
+    LakeRecord record1 = new LakeRecord("2019-20", "December 31", "February 11", 45);
+    LakeRecord record2 = new LakeRecord("2020-21", "February 10", "April 12", 40);
+    LakeRecord record3 = new LakeRecord("2017-18", "March 17", "April 10", 60);
+    // Add records to the tracker
+    tracker.add(record1);
+    tracker.add(record2);
+    tracker.add(record3);
+    // Check filtered records
+    FreezeTracker filtered = tracker.filterByDuration(40, 50);
+    if (filtered.size() != 2) {
+      return false;
+    }
+    if (!filtered.get(0).getWinter().equals("2019-20")) {
+      return false;
+    }
+    if (!filtered.get(1).getWinter().equals("2020-21")) {
+      return false;
+    }
+    return true;
   }
 
   /**

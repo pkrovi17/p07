@@ -388,7 +388,31 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    * @return a new, filtered linked list covering the given range of years.
    */
   public FreezeTracker filterByYear(int year1, int year2) {
-    return null; // TODO
+    // Create a new FreezeTracker instance
+    FreezeTracker filteredList = new FreezeTracker();
+    
+    // Iterate through the current list
+    LinkedNode current = head;
+    while (current != null) {
+      LakeRecord record = current.getLakeRecord();
+      int recordYear = record.getYear();
+      
+      // Check if the record's year is within the specified range
+      if (recordYear >= year1 && recordYear <= year2) {
+        // Create a deep copy of the record
+        LakeRecord deepCopy = new LakeRecord(
+          record.getWinter(),
+          record.getFreezeDate(),
+          record.getThawDate(),
+          record.getDaysOfIceCover()
+        );
+        // Add the deep copy to the new list
+        filteredList.add(deepCopy);
+      }
+      current = current.getNext();
+    }
+    // return the new list
+    return filteredList;
   }
 
   /**
@@ -400,7 +424,31 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    * @return a new linked list containing only nodes from the given year
    */
   public FreezeTracker filterByYear(int year) {
-    return null; // TODO
+    // Create a new FreezeTracker instance
+    FreezeTracker filteredList = new FreezeTracker();
+    
+    // Iterate through the current list
+    LinkedNode current = head;
+    while (current != null) {
+      LakeRecord record = current.getLakeRecord();
+      int recordYear = record.getYear();
+      
+      // Check if the record's year matches the specified year
+      if (recordYear == year) {
+        // Create a deep copy of the record
+        LakeRecord deepCopy = new LakeRecord(
+          record.getWinter(),
+          record.getFreezeDate(),
+          record.getThawDate(),
+          record.getDaysOfIceCover()
+        );
+        // Add the deep copy to the new list
+        filteredList.add(deepCopy);
+      }
+      current = current.getNext();
+    }
+    
+    return filteredList;
   }
 
   /**
@@ -413,7 +461,31 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    * @return a new list containing only records with duration in the given range
    */
   public FreezeTracker filterByDuration(int low, int high) {
-    return null; // TODO
+    // Create a new FreezeTracker instance
+    FreezeTracker filteredList = new FreezeTracker();
+    
+    // Iterate through the current list
+    LinkedNode current = head;
+    while (current != null) {
+      LakeRecord record = current.getLakeRecord();
+      int duration = record.getDaysOfIceCover();
+      
+      // Check if the record's duration is within the specified range
+      if (duration >= low && duration <= high) {
+        // Create a deep copy of the record
+        LakeRecord deepCopy = new LakeRecord(
+          record.getWinter(),
+          record.getFreezeDate(),
+          record.getThawDate(),
+          record.getDaysOfIceCover()
+        );
+        // Add the deep copy to the new list
+        filteredList.add(deepCopy);
+      }
+      current = current.getNext();
+    }
+    
+    return filteredList;
   }
 
 
@@ -423,7 +495,29 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    * @return The date of the latest thaw, e.g. "April 15"
    */
   public String getLatestThaw() {
-    return null; // TODO
+    // If list is empty, return null
+    if (isEmpty()) {
+      return null;
+    }
+    // Initialize latest thaw with first record's thaw date
+    Iterator<LakeRecord> iter = this.iterator();
+    LakeRecord firstRecord = iter.next();
+    String latestThaw = firstRecord.getThawDate();
+    
+    // Use the iterator to find latest thaw date
+    while (iter.hasNext()) {
+      LakeRecord record = iter.next();
+      String currentThaw = record.getThawDate();
+      if (currentThaw != null && (latestThaw == null || Date.compareDates(currentThaw, latestThaw) > 0)) {
+        latestThaw = currentThaw;
+      }
+    }
+    LakeRecord record = iter.next();
+    String currentThaw = record.getThawDate();
+    if (currentThaw != null && (latestThaw == null || Date.compareDates(currentThaw, latestThaw) > 0)) {
+      latestThaw = currentThaw;
+    }
+    return latestThaw;
   }
 
   /**
@@ -432,7 +526,30 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    * @return The day of the earliest freeze, e.g. "December 2"
    */
   public String getEarliestFreeze() {
-    return null; // TODO
+    // If list is empty, return null
+    if (isEmpty()) {
+      return null;
+    }
+    
+    // Initialize earliest freeze with first record's freeze date
+    Iterator<LakeRecord> iter = this.iterator();
+    LakeRecord firstRecord = iter.next();
+    String earliestFreeze = firstRecord.getFreezeDate();
+    
+    // Use the iterator to find earliest freeze date
+    while (iter.hasNext()) {
+      LakeRecord record = iter.next();
+      String currentFreeze = record.getFreezeDate();
+      if (currentFreeze != null && (earliestFreeze == null || Date.compareDates(currentFreeze, earliestFreeze) < 0)) {
+        earliestFreeze = currentFreeze;
+      }
+    }
+    LakeRecord record = iter.next();
+    String currentFreeze = record.getFreezeDate();
+    if (currentFreeze != null && (earliestFreeze == null || Date.compareDates(currentFreeze, earliestFreeze) < 0)) {
+      earliestFreeze = currentFreeze;
+    }
+    return earliestFreeze;
   }
 
   /**
@@ -441,7 +558,28 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    * @return The average number of days of ice cover across all nodes, or 0 if list is empty.
    */
   public float getAverageFreezeDuration() {
-    return 0; // TODO
+    // If list is empty, return 0
+    if (isEmpty()) {
+      return 0;
+    }
+    
+    // Initialize sum and count
+    int totalDuration = 0;
+    int count = 0;
+    
+    // Use the iterator to traverse through all records
+    Iterator<LakeRecord> iter = this.iterator();
+    while (iter.hasNext()) {
+      LakeRecord record = iter.next();
+      totalDuration += record.getDaysOfIceCover();
+      count++;
+    }
+    LakeRecord record =iter.next();
+    totalDuration += record.getDaysOfIceCover();
+    count++;
+    
+    // Calculate and return the average
+    return (float) totalDuration / count;
   }
 
   /**
@@ -450,7 +588,30 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    * @return The maximum number of days of ice cover across all nodes, or 0 if the list is empty.
    */ 
   public int getMaxFreezeDuration() {
-    return 0; // TODO
+    // If list is empty, return 0
+    if (isEmpty()) {
+      return 0;
+    }
+    
+    // Initialize max duration with first record's duration
+    Iterator<LakeRecord> iter = this.iterator();
+    LakeRecord firstRecord = iter.next();
+    int maxDuration = firstRecord.getDaysOfIceCover();
+    
+    // Use the iterator to find maximum duration
+    while (iter.hasNext()) {
+      LakeRecord record = iter.next();
+      int currentDuration = record.getDaysOfIceCover();
+      if (currentDuration > maxDuration) {
+        maxDuration = currentDuration;
+      }
+    }
+    LakeRecord record = iter.next();
+    int currentDuration = record.getDaysOfIceCover();
+    if (currentDuration > maxDuration) {
+      maxDuration = currentDuration;
+    }
+    return maxDuration;
   }
 
   /**
@@ -459,7 +620,30 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    * @return The minimum number of days of ice cover across all nodes, or 0 if the list is empty.
    */ 
   public int getMinFreezeDuration() {
-    return 0; // TODO 
+    // If list is empty, return 0
+    if (isEmpty()) {
+      return 0;
+    }
+    
+    // Initialize min duration with first record's duration
+    Iterator<LakeRecord> iter = this.iterator();
+    LakeRecord firstRecord = iter.next();
+    int minDuration = firstRecord.getDaysOfIceCover();
+    
+    // Use the iterator to find minimum duration
+    while (iter.hasNext()) {
+      LakeRecord record = iter.next();
+      int currentDuration = record.getDaysOfIceCover();
+      if (currentDuration < minDuration) {
+        minDuration = currentDuration;
+      }
+    }
+    LakeRecord record = iter.next();
+    int currentDuration = record.getDaysOfIceCover();
+    if (currentDuration < minDuration) {
+      minDuration = currentDuration;
+    }
+    return minDuration;
   }
 
   /**
