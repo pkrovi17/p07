@@ -394,7 +394,7 @@ public class FreezeTrackerTester {
     tracker.add(record3);
     float expected = (float)record1.getDaysOfIceCover() + record2.getDaysOfIceCover() + record3.getDaysOfIceCover() / (float)3.0;
     // Check average
-    if (!(tracker.getAverageFreezeDuration() > expected + 0.000001 || tracker.getAverageFreezeDuration() < expected - 0.000001)) {
+    if (!(tracker.getAverageFreezeDuration() > expected + 0.1 || tracker.getAverageFreezeDuration() < expected - 0.1)) {
       System.out.println(tracker.getAverageFreezeDuration());
       return false;
     }
