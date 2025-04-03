@@ -297,7 +297,63 @@ public class FreezeTrackerTester {
    * @return true if all cases pass, false otherwise.
    */
   public static boolean testCleanData() {
-    return false; // default return statement
+    {
+      FreezeTracker tracker = new FreezeTracker(LakeRecordReader.getLakeRecords("C:\\Users\\pkrov\\Documents\\p07\\p07\\src\\FreezeData.csv"));
+      // Check size 
+      if (tracker.size() != 170) {
+        System.out.println(tracker.size());
+        return false;
+      }
+    }
+    // remove incomplete records
+    {
+      // Create a new FreezeTracker
+      FreezeTracker tracker = new FreezeTracker();
+      // Create some LakeRecord objects
+      LakeRecord record1 = new LakeRecord("2019-20", "December 31", "February 11", 45);
+      LakeRecord record2 = new LakeRecord("2020-21", "February 10", null, 50);
+      LakeRecord record3 = new LakeRecord("2017-18", "March 17", "April 10", 20);
+      // Add records to the tracker
+      tracker.add(record1);
+      tracker.add(record2);
+      tracker.add(record3);
+      tracker.removeIncompleteRecords();
+      // Check size
+      if (tracker.size() != 2) {
+        System.out.println(tracker.size());
+        return false;
+      }
+    }
+    {
+      // Create a new FreezeTracker
+      FreezeTracker tracker = new FreezeTracker();
+      // Create some LakeRecord objects
+      LakeRecord record1 = new LakeRecord("2019-20", "December 31", "February 11", 45);
+      LakeRecord record2 = new LakeRecord("2020-21", "February 10", "April 12", 52);
+      LakeRecord record3 = new LakeRecord("2017-18", "March 17", "April 10", 30);
+      // Add records to the tracker
+      tracker.add(record1);
+      tracker.add(record2);
+      tracker.add(record3);
+      tracker.updateDurations();
+      // Check size
+      if (tracker.size() != 3) {
+        return false;
+      }
+      if (tracker.get(0).getDaysOfIceCover() != 42) {
+        System.out.println(tracker.get(0).getDaysOfIceCover());
+        return false;
+      }
+      if (tracker.get(1).getDaysOfIceCover() != 61) {
+        System.out.println(tracker.get(1).getDaysOfIceCover());
+        return false;
+      }
+      if (tracker.get(2).getDaysOfIceCover() != 24) {
+        System.out.println(tracker.get(2).getDaysOfIceCover());
+        return false;
+      }
+    }
+    return true; // default return statement
   }
 
   /**

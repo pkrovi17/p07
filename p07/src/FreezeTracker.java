@@ -276,16 +276,19 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    * Removes all nodes with missing freeze or thaw dates
    */
   public void removeIncompleteRecords() {
-    Iterator <LakeRecord> iter = this.iterator();
-    while (iter.hasNext()) {
-      LakeRecord record = iter.next();
-      // Check if the record has complete data
-      if (!record.hasCompleteData()) {
-        this.remove(record);
-        // Reset the iterator to the beginning
-        iter = this.iterator();
-        // Reset the current record
-        record = null;
+    LinkedNode current = head;
+    // Traverse the list to find records with missing data
+    while (current != null) {
+      // Check if the record is incomplete
+      if (!current.getLakeRecord().hasCompleteData()) {
+        // Remove the node
+        LinkedNode toRemove = current;
+        current = current.getNext();
+        this.removeNode(toRemove);
+        System.out.println("remove" + toRemove.getLakeRecord());
+      } else {
+        // Move to the next node
+        current = current.getNext();
       }
     }
   }
@@ -294,10 +297,7 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    * (Hint: LakeRecord already has a method for this!)
    */
   public void updateDurations() {
-    Iterator <LakeRecord> iter = this.iterator();
-    while (iter.hasNext()) {
-      iter.next().updateDuration();
-    }
+
   }
 
   /**
@@ -341,6 +341,7 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
         // discard both records
         //this.remove(currentRecord);
         this.remove(nextRecord);
+        System.out.println(currentRecord);
         //this.add(mergedRecord);
         // reset the iterator to the beginning
         iter = this.iterator();
