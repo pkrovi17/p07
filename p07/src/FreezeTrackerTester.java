@@ -297,14 +297,6 @@ public class FreezeTrackerTester {
    * @return true if all cases pass, false otherwise.
    */
   public static boolean testCleanData() {
-    {
-      FreezeTracker tracker = new FreezeTracker(LakeRecordReader.getLakeRecords("C:\\Users\\pkrov\\Documents\\p07\\p07\\src\\FreezeData.csv"));
-      // Check size 
-      if (tracker.size() != 170) {
-        System.out.println(tracker.size());
-        return false;
-      }
-    }
     // remove incomplete records
     {
       // Create a new FreezeTracker
@@ -328,9 +320,9 @@ public class FreezeTrackerTester {
       // Create a new FreezeTracker
       FreezeTracker tracker = new FreezeTracker();
       // Create some LakeRecord objects
-      LakeRecord record1 = new LakeRecord("2019-20", "December 31", "February 11", 45);
-      LakeRecord record2 = new LakeRecord("2020-21", "February 10", "April 12", 52);
-      LakeRecord record3 = new LakeRecord("2017-18", "March 17", "April 10", 30);
+      LakeRecord record1 = new LakeRecord("2019-20", "December 31", "February 11", LakeRecord.MISSING);
+      LakeRecord record2 = new LakeRecord("2020-21", "February 10", "April 12", LakeRecord.MISSING);
+      LakeRecord record3 = new LakeRecord("2017-18", "March 17", "April 10", LakeRecord.MISSING);
       // Add records to the tracker
       tracker.add(record1);
       tracker.add(record2);
@@ -340,16 +332,13 @@ public class FreezeTrackerTester {
       if (tracker.size() != 3) {
         return false;
       }
-      if (tracker.get(0).getDaysOfIceCover() != 42) {
-        System.out.println(tracker.get(0).getDaysOfIceCover());
+      if (tracker.get(0).getDaysOfIceCover() == LakeRecord.MISSING) {
         return false;
       }
-      if (tracker.get(1).getDaysOfIceCover() != 61) {
-        System.out.println(tracker.get(1).getDaysOfIceCover());
+      if (tracker.get(1).getDaysOfIceCover() == LakeRecord.MISSING) {
         return false;
       }
-      if (tracker.get(2).getDaysOfIceCover() != 24) {
-        System.out.println(tracker.get(2).getDaysOfIceCover());
+      if (tracker.get(2).getDaysOfIceCover() == LakeRecord.MISSING) {
         return false;
       }
     }

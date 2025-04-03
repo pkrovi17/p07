@@ -6,10 +6,16 @@ public class IteratorFwd implements Iterator<LakeRecord> {
         current = start;
     }
     public boolean hasNext() {
-        return current.getNext() != null;
+        boolean hasNext = true;
+        try{
+            hasNext = (current.getNext() != null);
+        } catch (NullPointerException e) {
+            hasNext = false;
+        }
+        return hasNext;
     }
     public LakeRecord next() {
-        if (!hasNext()) {
+        if (current == null) {
             throw new NoSuchElementException("No more elements in the iterator.");
         }
         LakeRecord data = current.getLakeRecord();

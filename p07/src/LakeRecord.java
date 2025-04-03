@@ -136,8 +136,6 @@ public class LakeRecord {
     }
   }
 
-
-
   /**
    * Converts the record into a readable string.
    * 

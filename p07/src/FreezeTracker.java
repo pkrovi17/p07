@@ -285,7 +285,7 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
         LinkedNode toRemove = current;
         current = current.getNext();
         this.removeNode(toRemove);
-        System.out.println("remove" + toRemove.getLakeRecord());
+        //System.out.println("remove" + toRemove.getLakeRecord());
       } else {
         // Move to the next node
         current = current.getNext();
@@ -297,7 +297,31 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    * (Hint: LakeRecord already has a method for this!)
    */
   public void updateDurations() {
-
+    // Traverse through all nodes in the list
+    LinkedNode current = head;
+    while (current != null) {
+      // Get the current record
+      LakeRecord record = current.getLakeRecord();
+      // Create a new record with MISSING duration
+      LakeRecord newRecord = new LakeRecord(record.getWinter(), record.getFreezeDate(), record.getThawDate(), LakeRecord.MISSING);
+      // Update the duration
+      newRecord.updateDuration();
+      // Create a new node with the updated record
+      LinkedNode newNode = new LinkedNode(newRecord, current.getPrev(), current.getNext());
+      // Update the links
+      if (current.getPrev() != null) {
+        current.getPrev().setNext(newNode);
+      } else {
+        head = newNode;
+      }
+      if (current.getNext() != null) {
+        current.getNext().setPrev(newNode);
+      } else {
+        tail = newNode;
+      }
+      // Move to next node
+      current = current.getNext();
+    }
   }
 
   /**
@@ -341,7 +365,7 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
         // discard both records
         //this.remove(currentRecord);
         this.remove(nextRecord);
-        System.out.println(currentRecord);
+        //System.out.println(currentRecord);
         //this.add(mergedRecord);
         // reset the iterator to the beginning
         iter = this.iterator();
