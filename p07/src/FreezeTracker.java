@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Iterator;
-
 /**
  * A doubly-linked list implementation for managing freeze-thaw records of Lake Mendota. Implements
  * ListADT and Iterable, providing operations for adding, removing, merging, and analyzing freeze
@@ -43,7 +42,6 @@ public class FreezeTracker implements ListADT<LakeRecord>, Iterable<LakeRecord> 
    *                missing or duplicate entries, which are handled during initialization.
    */
   public FreezeTracker(ArrayList<LakeRecord> records) {
-    // TODO
     // Initialize the linked list
     head = null;
     tail = null;
